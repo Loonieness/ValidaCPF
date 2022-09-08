@@ -1,17 +1,26 @@
-const elementos = [
-    {tag: 'p', texto: 'Qualquer texto.'},
-    {tag: 'div', texto: 'Frase 2'},
-    {tag: 'section', texto: 'Frase 3'},
-    {tag: 'footer', texto: 'Frase 4'},
-]
+function ValidaCPF(cpfEnviado){
 
-//seleciona apenas um elemento, a primeira classe com esse nome, que é onde estamos mexendo
-const container = document.querySelector('.container');
-
-//cria a const que será a div que será criada para por os elementos
-const div = document.createElement('div');
-
-//cria variavel de controle dentro do FOR, que será menor que o tamanho do nosso array
-for(let i = 0; i < elementos.length; i++) {
-    console.log(elementos[i]);//trás o elemento pelo endereço int
+    Object.defineProperty(this, 'cpfLimpo', {
+        enumerable: true,
+        get: function() {
+            return cpfEnviado.replace(/\D+/g, '');//essa expressão representa caracteres especiais
+        }
+    });
 }
+
+ValidaCPF.prototype.valida = function() {//criando dentro do prototype a função
+    if(typeof this.cpfLimpo === 'undefined') return false;
+    if(this.cpfLimpo.length !== 11) return false;
+    
+    const cpfParcial = this.cpfLimpo.slice(0, -2);
+    const digito1 = this.criaDigito(cpfParcial);
+    
+    return true;
+}
+
+ValidaCPF.prototype.criaDigito = function(cpfParcial) {
+    const cpfArray = Array.from(cpfParcial);
+    console.log(cpfArray);
+}
+const cpf = new ValidaCPF('705.484.450-52');
+console.log(cpf.valida());
