@@ -11,7 +11,7 @@ function ValidaCPF(cpfEnviado){
 ValidaCPF.prototype.valida = function() {//criando dentro do prototype a função
     if(typeof this.cpfLimpo === 'undefined') return false;
     if(this.cpfLimpo.length !== 11) return false;
-   
+    if(this.isSequencia()) return false;
     
     const cpfParcial = this.cpfLimpo.slice(0, -2);
     const digito1 = this.criaDigito(cpfParcial);
@@ -33,7 +33,10 @@ ValidaCPF.prototype.criaDigito = function(cpfParcial) {//primeira parte dos cál
     return digito > 9 ? '0' : String(digito);//expressão ternária, se maior que 0 retorna zero senão digito
 
 }
-
+ValidaCPF.prototype.isSequencia = function() {//só para não acontecer de alguém escrever uma sequência no parametro
+    const sequencia = this.cpfLimpo[0].repeat(this.cpfLimpo.length);
+    return sequencia === this.cpfLimpo;
+}
 
 const cpf = new ValidaCPF('070.987.720-03');
 console.log(cpf.valida());
